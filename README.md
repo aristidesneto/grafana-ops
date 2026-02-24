@@ -1,87 +1,102 @@
 # Grafana Ops
 
-Uma ferramenta escrita em Go para realizar backup dos componentes do Grafana
-(dashboards, pastas, fontes de dados, etc.).
+![License](https://img.shields.io/github/license/aristidesneto/grafana-ops)
 
-> ⚠️ Projeto em desenvolvimento – use com cuidado em produção.
+A Go tool for backing up Grafana components (dashboards, folders, data sources,
+etc.).
 
-## Instalação
+> ⚠️ Project under development – use with caution in production.
 
-A maneira mais simples de instalar é baixar o *release* mais recente da
-página de Releases do GitHub e extrair o binário `gops`:
+## Installation
+
+The easiest way to install is to download the latest release from the GitHub
+Releases page and extract the `gops` binary:
 
 ```sh
-# Linux/amd64 como exemplo
+# Linux/amd64 example
 curl -LO https://github.com/aristidesneto/grafana-ops/releases/latest/download/gops_linux_amd64.tar.gz
 tar -xzf gops_linux_amd64.tar.gz
 chmod +x gops
-mv gops /usr/local/bin/        # ou outro diretório no PATH
+mv gops /usr/local/bin/        # or another directory on your PATH
 ```
 
-Para outras plataformas, substitua o nome do arquivo conforme apropriado
-(`gops_darwin_amd64`, `gops_windows_amd64.exe`, etc.).
+For other platforms, see [Releases](https://github.com/aristidesneto/grafana-ops/releases).
 
-> 🧰 **Alternativa de desenvolvimento**: Se você preferir compilar localmente, o
-> repositório contém um `Makefile` que usa `goreleaser`. Execute `make deps &&
-> make build` e o binário será colocado em `dist/`.
+> 🧰 **Development alternative**: if you prefer to build locally, the
+> repository includes a `Makefile` that uses `goreleaser`. Run `make deps &&
+> make build` and the binary will be placed in `dist/`.
 
-## Configuração e uso
+## Configuration and usage
 
-O utilitário aceita opções de várias fontes, na seguinte ordem de precedência:
-1. Flags de linha de comando
-2. Variáveis de ambiente
-3. Arquivo de configuração YAML
+The utility accepts options from multiple sources, in the following order of
+precedence:
+1. Command‑line flags
+2. Environment variables
+3. YAML configuration file
 
-### Exemplo rápido – flags
+### Quick example – flags
 
 ```sh
-gops \
+gops save \
   --grafana-url https://grafana.example.com \
   --grafana-token "mytoken" \
-  --output ./backups \
+  --output ./backup \
   --loglevel debug
 ```
 
-### Usando variáveis de ambiente
+### Using environment variables
+
+You can configure Grafana Ops using environment variables instead of flags. All variables must be prefixed with `GO_`.
 
 ```sh
-export GRAFANA_URL=https://grafana.example.com
-export GRAFANA_TOKEN=mytoken
-export OUTPUT=./backups
-export LOGLEVEL=info
-# executar sem flags
-gops
+export GO_GRAFANA_URL=https://grafana.example.com
+export GO_GRAFANA_TOKEN=mytoken
+export GO_OUTPUT=./backup
+export GO_LOGLEVEL=info
+# run without flags
+gops save
 ```
 
-### Arquivo de configuração
+| Flag | Environment Variable | Default |
+| --- | --- | --- |
+| `--grafana-url` | `GO_GRAFANA_URL` | |
+| `--grafana-token` | `GO_GRAFANA_TOKEN` | |
+| `--output` | `GO_OUTPUT` | ./_output |
+| `--loglevel` | `GO_LOGLEVEL` | info |
 
-O arquivo é YAML e pode ser passado com `--config` ou `-c`. Exemplo de
-`config.yaml`:
+### Configuration file
+
+The file is YAML and can be passed with `--config` or `-c`. Example `config.yaml`:
 
 ```yaml
 # config.yaml
 grafana-url: https://grafana.example.com
 grafana-token: "mytoken"
-output: ./backups
+output: ./backup
 loglevel: info
 ```
 
 ```sh
-gops --config /path/to/config.yaml
+gops save --config /path/to/config.yaml
 ```
 
-Se preferir, o diretório padrão buscado é `./` e `~/.gops` com o
-nome `config.yaml`.
+By default the program looks for `config.yaml` in `./` and
+`~/.gops` if you don’t specify a file.
 
-## Exemplos de uso
+## Usage examples
 
-- Backup completo usando flags:
+- Full backup using flags:
 ```sh
-gops save --grafana-url https://grafana.local --grafana-token abc123 \  
-      --output /var/backups/grafana
+gops save --grafana-url https://grafana.example.com \
+   --grafana-token mytoken \
+   --output ./backup
 ```
 
-## Contribuindo
+## Contributing
 
-Sinta-se à vontade para enviar pull requests, reportar issues ou sugerir
-melhorias.
+Feel free to open pull requests, report issues or suggest improvements.
+
+## License
+
+This project is licensed under the **Apache License 2.0** – see the
+[LICENSE](LICENSE) file for details.
