@@ -13,9 +13,9 @@ The easiest way to install is to download the latest release from the GitHub
 Releases page and extract the `gops` binary:
 
 ```sh
-# Linux/amd64 example
-curl -LO https://github.com/aristidesneto/grafana-ops/releases/latest/download/gops_linux_amd64.tar.gz
-tar -xzf gops_linux_amd64.tar.gz
+# Linux/x86_64 example
+curl -LO https://github.com/aristidesneto/grafana-ops/releases/latest/download/gops_Linux_x86_64.tar.gz
+tar -xzf gops_Linux_x86_64.tar.gz
 chmod +x gops
 mv gops /usr/local/bin/        # or another directory on your PATH
 ```
